@@ -8,7 +8,7 @@
   },
   "scripts": {
     "test": "jest --watchAll",
-    "start": "nodemon index"
+    "start": "index"
   },
   "author": "Pablo Esteban",
   "license": "ISC",

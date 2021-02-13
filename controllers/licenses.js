@@ -3,18 +3,15 @@ const DateManager = require('../classes/dateManager');
 
 exports.getResult = (req, res) => {
   //data into array
-  const dataArray = req.body.data.split(' ');
+  const data = req.body.data.split(' ');
 
   //separate info
 
   //create license
-  const license = new License(dataArray[0]);
+  const license = new License(data[0]);
 
   //create date
-  const dateManager = new DateManager(
-    dataArray[1],
-    dataArray[2]
-  );
+  const dateManager = new DateManager(data[1], data[2]);
 
   const errorMessage =
     'error in data, input format should be ABC0000 31-01-2019 15:59';
@@ -48,27 +45,27 @@ exports.getResult = (req, res) => {
       info = successMsg;
     } else if (
       day == 1 &&
-      (license.lastDigit() == 1 || license.lastDigit() == 2)
+      [1, 2].includes(license.lastDigit())
     ) {
       info = failMsg;
     } else if (
       day == 2 &&
-      (license.lastDigit() == 3 || license.lastDigit() == 4)
+      [3, 4].includes(license.lastDigit())
     ) {
       info = failMsg;
     } else if (
       day == 3 &&
-      (license.lastDigit() == 5 || license.lastDigit() == 6)
+      [5, 6].includes(license.lastDigit())
     ) {
       info = failMsg;
     } else if (
       day == 4 &&
-      (license.lastDigit() == 7 || license.lastDigit() == 8)
+      [7, 8].includes(license.lastDigit())
     ) {
       info = failMsg;
     } else if (
       day == 5 &&
-      (license.lastDigit() == 9 || license.lastDigit() == 0)
+      [9, 0].includes(license.lastDigit())
     ) {
       info = failMsg;
     }
