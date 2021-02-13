@@ -5,8 +5,6 @@ exports.getResult = (req, res) => {
   //data into array
   const data = req.body.data.split(' ');
 
-  //separate info
-
   //create license
   const license = new License(data[0]);
 
@@ -36,8 +34,7 @@ exports.getResult = (req, res) => {
   //get day
   const day = dateManager.dayToGoOut.day();
 
-  let info = '';
-
+  //restriction days
   const restrictionMap = {
     0: [],
     1: [1, 2],
@@ -47,6 +44,9 @@ exports.getResult = (req, res) => {
     5: [9, 0],
   };
 
+  let info = '';
+
+  //logic if hour is in range and license is restricted
   if (
     dateManager.isHourInRange() &&
     restrictionMap[day].includes(license.lastDigit())
@@ -56,6 +56,7 @@ exports.getResult = (req, res) => {
     info = 'Allowed to drive';
   }
 
+  //response
   res.status(200).json({
     success: true,
     data: {
