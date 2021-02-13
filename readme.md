@@ -3,13 +3,16 @@
 ## Requirements:
 
 - Node
-- Install dependencies (npm i)
+- Install dependencies
 
-Run the program
+```
+npm i
+```
+
+## Run the program
 
 ```
 npm start
-
 ```
 
 Program will be running on localhost:3000
@@ -20,9 +23,10 @@ ABC0000 31-01-2019 15:59
 
 Other formats will return error
 
+## Tests
+
 Run tests:
 
 ```
 npm test
-
 ```
