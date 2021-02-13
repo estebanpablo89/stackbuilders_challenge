@@ -1,5 +1,5 @@
-const moment = require('moment');
 const License = require('../classes/license');
+const DateManager = require('../classes/dateManager');
 
 exports.getResult = (req, res) => {
   //data into array
@@ -11,41 +11,10 @@ exports.getResult = (req, res) => {
   const license = new License(dataArray[0]);
 
   //create date
-  const dateToGoOut = moment(
-    dataArray[1] + ' ' + dataArray[2],
-    'DD-MM-YYYY kk:mm',
-    true
+  const dateManager = new DateManager(
+    dataArray[1],
+    dataArray[2]
   );
-
-  //restriction morning
-  const morningDateBegin = moment(
-    dataArray[1] + ' ' + '07:00',
-    'DD-MM-YYYY kk:mm'
-  );
-  const morningDateEnd = moment(
-    dataArray[1] + ' ' + '09:30',
-    'DD-MM-YYYY kk:mm'
-  );
-
-  //restriction afternoon
-  const afternoonDateBegin = moment(
-    dataArray[1] + ' ' + '16:00',
-    'DD-MM-YYYY kk:mm'
-  );
-  const afternoonDateEnd = moment(
-    dataArray[1] + ' ' + '19:30',
-    'DD-MM-YYYY kk:mm'
-  );
-
-  //check if hour is in pico y placa range
-  let isTimeInHourRange = false;
-
-  if (
-    dateToGoOut.isBetween(morningDateBegin, morningDateEnd) ||
-    dateToGoOut.isBetween(afternoonDateBegin, afternoonDateEnd)
-  ) {
-    isTimeInHourRange = true;
-  }
 
   const errorMessage =
     'error in data, input format should be ABC0000 31-01-2019 15:59';
@@ -58,20 +27,23 @@ exports.getResult = (req, res) => {
   }
 
   //return error if invalid date
-  if (!dateToGoOut.isValid()) {
+  if (
+    !dateManager.hourToGoOut.isValid() ||
+    !dateManager.dayToGoOut.isValid()
+  ) {
     return res.status(400).json({
       error: errorMessage,
     });
   }
 
   //get day
-  const day = dateToGoOut.day();
+  const day = dateManager.dayToGoOut.day();
 
   let info = '';
   const successMsg = 'Allowed to drive';
   const failMsg = 'Not allowed to drive';
 
-  if (isTimeInHourRange) {
+  if (dateManager.isHourInRange()) {
     if (day == 0) {
       info = successMsg;
     } else if (
@@ -108,7 +80,7 @@ exports.getResult = (req, res) => {
     success: true,
     data: {
       license: license.number,
-      dateToGoOut,
+      date: dateManager.dayToGoOut,
       info,
     },
   });

@@ -36,7 +36,7 @@ describe('License plate', () => {
       .post('/api/licenses')
       .send({ data: correctFormat });
     expect(response.status).toBe(200);
-    expect(response.body.data.dateToGoOut).toBeDefined();
+    expect(response.body.data.date).toBeDefined();
   });
 
   it('returns error message if license is not valid', async () => {
