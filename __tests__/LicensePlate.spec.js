@@ -85,9 +85,33 @@ describe('License plate', () => {
   it('returns fail message if not allowed to drive (monday)', async () => {
     const response = await request(app)
       .post('/api/licenses')
-      .send({ data: 'ABC0001 08-02-2021 09:00' });
+      .send({ data: 'ABC0001 08-02-2021 07:30' });
     expect(response.status).toBe(200);
     expect(response.body.data.info).toBe(failMsg);
+  });
+
+  it('returns fail message if not allowed to drive (tuesday)', async () => {
+    const response = await request(app)
+      .post('/api/licenses')
+      .send({ data: 'ABC0003 09-02-2021 16:00' });
+    expect(response.status).toBe(200);
+    expect(response.body.data.info).toBe(failMsg);
+  });
+
+  it('returns fail message if not allowed to drive (friday)', async () => {
+    const response = await request(app)
+      .post('/api/licenses')
+      .send({ data: 'ABC0009 12-02-2021 19:30' });
+    expect(response.status).toBe(200);
+    expect(response.body.data.info).toBe(failMsg);
+  });
+
+  it('returns success message if allowed to drive (friday)', async () => {
+    const response = await request(app)
+      .post('/api/licenses')
+      .send({ data: 'ABC0009 12-02-2021 19:31' });
+    expect(response.status).toBe(200);
+    expect(response.body.data.info).toBe(successMsg);
   });
 
   it('returns success message if allowed to drive (time not in range)', async () => {

@@ -6,12 +6,12 @@ class DateManager {
     this.hourToGoOut = moment(hourToGoOut, 'kk:mm', true);
 
     //restriction morning hour
-    this.morningRestrictionBegin = moment('07:00', 'kk:mm');
-    this.morningRestrictionEnd = moment('09:30', 'kk:mm');
+    this.morningRestrictionBegin = moment('06:59', 'kk:mm');
+    this.morningRestrictionEnd = moment('09:31', 'kk:mm');
 
     //restriction afternoon hour
-    this.afternoonRestrictionBegin = moment('16:00', 'kk:mm');
-    this.afternoonRestrictionEnd = moment('19:30', 'kk:mm');
+    this.afternoonRestrictionBegin = moment('15:59', 'kk:mm');
+    this.afternoonRestrictionEnd = moment('19:31', 'kk:mm');
   }
 
   isHourInRange() {
