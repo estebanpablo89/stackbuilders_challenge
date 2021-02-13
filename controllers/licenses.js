@@ -37,40 +37,23 @@ exports.getResult = (req, res) => {
   const day = dateManager.dayToGoOut.day();
 
   let info = '';
-  const successMsg = 'Allowed to drive';
-  const failMsg = 'Not allowed to drive';
 
-  if (dateManager.isHourInRange()) {
-    if (day == 0) {
-      info = successMsg;
-    } else if (
-      day == 1 &&
-      [1, 2].includes(license.lastDigit())
-    ) {
-      info = failMsg;
-    } else if (
-      day == 2 &&
-      [3, 4].includes(license.lastDigit())
-    ) {
-      info = failMsg;
-    } else if (
-      day == 3 &&
-      [5, 6].includes(license.lastDigit())
-    ) {
-      info = failMsg;
-    } else if (
-      day == 4 &&
-      [7, 8].includes(license.lastDigit())
-    ) {
-      info = failMsg;
-    } else if (
-      day == 5 &&
-      [9, 0].includes(license.lastDigit())
-    ) {
-      info = failMsg;
-    }
+  const restrictionMap = {
+    0: [],
+    1: [1, 2],
+    2: [3, 4],
+    3: [5, 6],
+    4: [7, 8],
+    5: [9, 0],
+  };
+
+  if (
+    dateManager.isHourInRange() &&
+    restrictionMap[day].includes(license.lastDigit())
+  ) {
+    info = 'Not allowed to drive';
   } else {
-    info = successMsg;
+    info = 'Allowed to drive';
   }
 
   res.status(200).json({
